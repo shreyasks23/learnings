@@ -1,8 +1,8 @@
 export default {
-  displayName: 'gradebook',
+  displayName: 'gradebook-host',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../coverage/apps/gradebook',
+  coverageDirectory: '../../coverage/projects/host',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',
