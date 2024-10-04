@@ -1,0 +1,116 @@
+{
+  "name": "gradebook-teacher",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "app",
+  "sourceRoot": "projects/remote/teacher/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:webpack-browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/projects/remote/teacher",
+        "index": "projects/remote/teacher/src/index.html",
+        "main": "projects/remote/teacher/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "projects/remote/teacher/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          {
+            "input": "projects/lib/common/assets/i18n",
+            "glob": "**/*.json",
+            "output": "assets/i18n"
+          },
+          {
+            "glob": "**/*",
+            "input": "projects/remote/teacher/public"
+          }
+        ],
+        "styles": ["projects/remote/teacher/src/styles.scss"],
+        "scripts": [],
+        "customWebpackConfig": {
+          "path": "projects/remote/teacher/webpack.config.ts"
+        }
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all",
+          "customWebpackConfig": {
+            "path": "projects/remote/teacher/webpack.prod.config.ts"
+          }
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@nx/angular:dev-server",
+      "options": {
+        "port": 4201,
+        "publicHost": "http://localhost:4201"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "gradebook-teacher:build:production"
+        },
+        "development": {
+          "buildTarget": "gradebook-teacher:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "buildTarget": "gradebook-teacher:build"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "projects/remote/teacher/jest.config.ts"
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "defaultConfiguration": "production",
+      "options": {
+        "buildTarget": "gradebook-teacher:build",
+        "port": 4201,
+        "watch": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "gradebook-teacher:build:development"
+        },
+        "production": {
+          "buildTarget": "gradebook-teacher:build:production"
+        }
+      }
+    }
+  }
+}
