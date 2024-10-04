@@ -5,9 +5,9 @@ import {
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { appRoutes } from './app.routes';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { HttpClient, provideHttpClient, withFetch } from '@angular/common/http';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { provideHttpClient, withFetch, HttpClient } from '@angular/common/http';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -17,7 +17,6 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideHttpClient(withFetch()),
-    provideRouter(appRoutes),
     importProvidersFrom(
       TranslateModule.forRoot({
         loader: {
@@ -27,5 +26,6 @@ export const appConfig: ApplicationConfig = {
         },
       })
     ),
+    provideRouter(appRoutes),
   ],
 };
